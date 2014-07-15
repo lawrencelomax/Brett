@@ -272,6 +272,11 @@ NSString * const BrettErrorDomain = @"com.brett.error";
 
 + (void)writeFileDataForObject:(id)object atLocation:(NSUInteger)location withLength:(NSUInteger)length atPath:(NSString *)path
 {
+    NSURL *fileURL = [NSURL fileURLWithPath:path];
+    NSURL *directoryURL = [fileURL URLByDeletingLastPathComponent];
+    NSError *error = nil;
+    [[NSFileManager defaultManager] createDirectoryAtURL:directoryURL withIntermediateDirectories:YES attributes:nil error:&error];
+  
     if ([object isKindOfClass:[NSData class]])
     {
         [[NSFileManager defaultManager] createFileAtPath:path contents:[object subdataWithRange:NSMakeRange(location, length)] attributes:nil]; //Write the file on filesystem
